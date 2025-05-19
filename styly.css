@@ -4,7 +4,10 @@ body {
 }
 button {
   padding: 10px 20px;
+  background-color: white;
+  border-radius: 5px;
 }
+
 #vysledek {
   margin-top: 20px;
   font-size: 1.1em;

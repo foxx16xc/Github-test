@@ -1,4 +1,48 @@
-<p>Někam se dostáváme</p>
-<p>První úprava</p>
-<p>uprava vetev_1</p>
-<a href="index.html">úprava</a>
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <title>Async/Await ukázka</title>
+  <link rel="stylesheet" href="styly.css">
+</head>
+<body>
+  <h1>Načtení náhodného uživatele</h1>
+  <button onclick="nactiUzivatele()">Načti uživatele</button>
+  <div id="vysledek" class="center">Klikni na tlačítko pro načtení.</div>
+
+  <script>
+    async function nactiUzivatele() {
+      const vysledek = document.getElementById('vysledek');
+      vysledek.innerHTML = '<div class="loader"></div>';
+
+      try {
+        const odpoved = await fetch('https://randomuser.me/api/');
+        const data = await odpoved.json();
+        const uzivatel = data.results[0];
+
+        // Získání dat
+        const jmeno = `${uzivatel.name.title} ${uzivatel.name.first} ${uzivatel.name.last}`;
+        const email = uzivatel.email;
+        const mesto = uzivatel.location.city;
+        const stat = uzivatel.location.state;
+        const narodnost = uzivatel.nat;
+        const foto = uzivatel.picture.large;
+
+        // Výsledky
+        vysledek.innerHTML = `
+          <div class="karta">
+            <img src="${foto}" alt="Foto uživatele">
+            <p><strong>Jméno:</strong> ${jmeno}</p>
+            <p><strong>E-mail:</strong> ${email}</p>
+            <p><strong>Bydliště:</strong> ${mesto}, ${stat}</p>
+            <p><strong>Národnost:</strong> ${narodnost}</p>
+          </div>
+        `;
+      } catch (chyba) {
+        vysledek.innerHTML = 'Nastala chyba při načítání dat.';
+        console.error(chyba);
+      }
+    }
+  </script>
+</body>
+</html>
